@@ -11,10 +11,4 @@ Imvkmark\L5Sms\L5SmsServiceProvider::class
 php artisan vendor:publish --tag=sour-lemon
 ```
 
-### 将以及支持的类型填入 `sl-sms.php`
-
-后台分配public_key 和 密钥
-
-
-### 测试上传
-
+### 将以及支持的类型填入 `l5-sms.php`

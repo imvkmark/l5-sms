@@ -44,7 +44,7 @@ class L5SmsServiceProvider extends ServiceProvider {
 
 
 	private function registerSms() {
-		$this->app->singleton('sl.sms', function () {
+		$this->app->singleton('l5.sms', function () {
 			$type  = ucfirst(camel_case(config('l5-sms.api_type')));
 			$class = 'Imvkmark\\L5Sms\\Repositories\\' . $type;
 			$sms   = new $class();
@@ -57,7 +57,7 @@ class L5SmsServiceProvider extends ServiceProvider {
 	 * @return array
 	 */
 	public function provides() {
-		return ['sl.sms'];
+		return ['l5.sms'];
 	}
 
 }
