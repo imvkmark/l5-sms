@@ -7,10 +7,14 @@ class Ihuyi implements SmsContract {
 
 	private $publicKey;
 	private $password;
+	private $sign;
+	private $type;
 
-	public function __construct() {
-		$this->publicKey = config('l5-sms.sms.ihuyi.public_key');
-		$this->password  = config('l5-sms.sms.ihuyi.password');
+	public function __construct($config) {
+		$this->publicKey = $config['public_key'];
+		$this->password  = $config['password'];
+		$this->sign      = $config['sign'];
+		$this->type      = $config['type'];
 	}
 
 	/**
@@ -32,7 +36,7 @@ class Ihuyi implements SmsContract {
 		if ($response->code == 2) {
 			return true;
 		} else {
-			\Log::error($response->msg);
+			$this->log('Send:' . $mobile . ';content:' . $content . '; Reason:' . $response->msg . ';');
 			return false;
 		}
 	}
@@ -63,7 +67,7 @@ class Ihuyi implements SmsContract {
 		if ($response->code == 2) {
 			return $response->num;
 		} else {
-			\Log::error($response->msg);
+			$this->log('Get Remain:' . $response->msg . ';');
 			return false;
 		}
 	}
@@ -77,5 +81,13 @@ class Ihuyi implements SmsContract {
 		$default = '您的验证码是：【变量】。请不要把验证码泄露给其他人。';
 		$content = str_replace('【变量】', LmStr::random(6, '0987654321'), $default);
 		return self::send($mobile, $content);
+	}
+
+	private function log($msg) {
+		\Log::error(
+			$msg . 'account:' . $this->publicKey . ';' .
+			'sign:' . $this->sign . ';' .
+			'type:' . $this->type . ';'
+		);
 	}
 }

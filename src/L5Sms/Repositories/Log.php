@@ -9,8 +9,8 @@ class Log implements SmsContract {
 	private $sign;
 
 
-	public function __construct() {
-		$this->sign = config('sl-sms.log.sign');
+	public function __construct($config) {
+		$this->sign = $config['sign'];
 	}
 
 	/**

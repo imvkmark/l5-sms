@@ -7,12 +7,12 @@ class Jianzhou implements SmsContract {
 	private $publicKey;
 	private $password;
 	private $sign;
-	
 
-	public function __construct() {
-		$this->publicKey = config('l5-sms.sms.jianzhou.public_key');
-		$this->password  = config('l5-sms.sms.jianzhou.password');
-		$this->sign      = config('l5-sms.sms.jianshou.sign');
+
+	public function __construct($config) {
+		$this->publicKey = $config['public_key'];
+		$this->password  = $config['password'];
+		$this->sign      = $config['sign'];
 	}
 
 	/**

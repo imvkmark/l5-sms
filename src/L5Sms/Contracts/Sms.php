@@ -1,7 +1,7 @@
 <?php namespace Imvkmark\L5Sms\Contracts;
 
 interface Sms {
-	
+
 	/**
 	 * 发送短信
 	 * @param $mobile
@@ -9,7 +9,6 @@ interface Sms {
 	 * @return mixed
 	 */
 	public function send($mobile, $content);
-
 
 	/**
 	 * 返回短信剩余量
