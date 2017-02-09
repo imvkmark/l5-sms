@@ -47,7 +47,7 @@ class L5SmsServiceProvider extends ServiceProvider {
 		$this->app->singleton('l5.sms', function() {
 			$type  = ucfirst(camel_case(config('l5-sms.api_type')));
 			$class = 'Imvkmark\\L5Sms\\Repositories\\' . $type;
-			$sms   = new $class(config('l5-sms.sms.' . $type));
+			$sms   = new $class(config('l5-sms.sms.' . config('l5-sms.api_type')));
 			return $sms;
 		});
 	}
