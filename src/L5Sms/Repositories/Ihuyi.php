@@ -2,15 +2,18 @@
 
 use Imvkmark\L5Sms\Contracts\Sms as SmsContract;
 use App\Lemon\Repositories\Sour\LmStr;
+use Imvkmark\L5Sms\Traits\BaseSms;
 
-class Ihuyi implements SmsContract {
+class Ihuyi implements SmsContract
+{
 
+	use BaseSms;
 	private $publicKey;
 	private $password;
 	private $sign;
-	private $type;
 
-	public function __construct($config) {
+	public function __construct($config)
+	{
 		$this->publicKey = $config['public_key'];
 		$this->password  = $config['password'];
 		$this->sign      = $config['sign'];
@@ -19,11 +22,13 @@ class Ihuyi implements SmsContract {
 
 	/**
 	 * 发送短信
-	 * @param $mobile
-	 * @param $content
+	 * @param string $mobile
+	 * @param string $content
+	 * @param array  $append
 	 * @return bool
 	 */
-	public function send($mobile, $content) {
+	public function send($mobile, $content, $append = [])
+	{
 		$params   = [
 			'account'  => $this->publicKey,
 			'password' => $this->password,
@@ -35,7 +40,8 @@ class Ihuyi implements SmsContract {
 
 		if ($response->code == 2) {
 			return true;
-		} else {
+		}
+		else {
 			$this->log('Send:' . $mobile . ';content:' . $content . '; Reason:' . $response->msg . ';');
 			return false;
 		}
@@ -44,7 +50,8 @@ class Ihuyi implements SmsContract {
 	/**
 	 * @return \SoapClient
 	 */
-	private function client() {
+	private function client()
+	{
 		static $_client;
 		if (!$_client) {
 			$_client = new \SoapClient('http://106.ihuyi.cn/webservice/sms.php?WSDL');
@@ -56,7 +63,8 @@ class Ihuyi implements SmsContract {
 	 * 短信余量
 	 * @return bool
 	 */
-	public function remain() {
+	public function remain()
+	{
 		$params = [
 			'account'  => $this->publicKey,
 			'password' => $this->password,
@@ -66,7 +74,8 @@ class Ihuyi implements SmsContract {
 		$response = $result->GetNumResult;
 		if ($response->code == 2) {
 			return $response->num;
-		} else {
+		}
+		else {
 			$this->log('Get Remain:' . $response->msg . ';');
 			return false;
 		}
@@ -77,13 +86,15 @@ class Ihuyi implements SmsContract {
 	 * @param $mobile
 	 * @return bool
 	 */
-	public function test($mobile) {
+	public function test($mobile)
+	{
 		$default = '您的验证码是：【变量】。请不要把验证码泄露给其他人。';
 		$content = str_replace('【变量】', LmStr::random(6, '0987654321'), $default);
 		return self::send($mobile, $content);
 	}
 
-	private function log($msg) {
+	private function log($msg)
+	{
 		\Log::error(
 			$msg . 'account:' . $this->publicKey . ';' .
 			'sign:' . $this->sign . ';' .

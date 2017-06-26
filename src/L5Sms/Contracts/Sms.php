@@ -1,14 +1,16 @@
 <?php namespace Imvkmark\L5Sms\Contracts;
 
-interface Sms {
+interface Sms
+{
 
 	/**
 	 * 发送短信
-	 * @param $mobile
-	 * @param $content
+	 * @param string $mobile
+	 * @param string $content
+	 * @param array  $append
 	 * @return mixed
 	 */
-	public function send($mobile, $content);
+	public function send($mobile, $content, $append = []);
 
 	/**
 	 * 返回短信剩余量
@@ -24,4 +26,5 @@ interface Sms {
 	public function test($mobile);
 
 
+	public function getType();
 }

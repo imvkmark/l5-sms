@@ -1,15 +1,19 @@
 <?php namespace Imvkmark\L5Sms\Repositories;
 
 use Imvkmark\L5Sms\Contracts\Sms as SmsContract;
+use Imvkmark\L5Sms\Traits\BaseSms;
 
-class Jianzhou implements SmsContract {
+class Jianzhou implements SmsContract
+{
 
+	use BaseSms;
 	private $publicKey;
 	private $password;
 	private $sign;
 
 
-	public function __construct($config) {
+	public function __construct($config)
+	{
 		$this->publicKey = $config['public_key'];
 		$this->password  = $config['password'];
 		$this->sign      = $config['sign'];
@@ -19,14 +23,16 @@ class Jianzhou implements SmsContract {
 	 * 短信余量
 	 * @return bool
 	 */
-	public function remain() {
+	public function remain()
+	{
 		// ...
 	}
 
 	/**
 	 * @return \SoapClient
 	 */
-	private function client() {
+	private function client()
+	{
 		static $_client;
 		if (!$_client) {
 			$_client = new \SoapClient('http://www.jianzhou.sh.cn/JianzhouSMSWSServer/services/BusinessService?wsdl');
@@ -39,17 +45,14 @@ class Jianzhou implements SmsContract {
 	 * @param $mobile
 	 * @return bool
 	 */
-	public function test($mobile) {
+	public function test($mobile)
+	{
 		// ...
 	}
 
-	/**
-	 * 发送短信
-	 * @param $mobile
-	 * @param $content
-	 * @return bool
-	 */
-	public function send($mobile, $content) {
+
+	public function send($mobile, $content, $append = [])
+	{
 		$params = [
 			'account'    => $this->publicKey,
 			'password'   => $this->password,
@@ -60,7 +63,8 @@ class Jianzhou implements SmsContract {
 
 		if ($result->sendBatchMessageReturn == 2) {
 			return true;
-		} else {
+		}
+		else {
 			\Log::error($result->sendBatchMessageReturn);
 			return false;
 		}
