@@ -12,3 +12,8 @@ php artisan vendor:publish --tag=sour-lemon
 ```
 
 ### 将以及支持的类型填入 `l5-sms.php`
+
+
+### License
+
+This plugin is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
